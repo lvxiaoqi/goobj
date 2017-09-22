@@ -13,6 +13,11 @@ class API
      *
      */
     const AUTH_001 = '/v3/auth/tokens';
-	
+
+    /*
+     * 对象存储模块 v1版本
+     *
+     * */
+    const OBJECT_001 = '/v1/{account}';
 }
 ?>

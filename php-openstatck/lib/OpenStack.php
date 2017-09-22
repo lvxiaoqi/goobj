@@ -16,7 +16,17 @@ class Openstack extends API
     //默认主机
     public static $HOST = 'http://controller:5000';
 
-
+    /*
+     * 构造方法
+     * $arr = [
+     *        'host',
+     * ]
+     * */
+    public function __construct($arr = [])
+    {
+        $host = empty($arr['host']) ? OpenStack::$HOST : $arr['host'];
+        $this->path = $host.$this->version;
+    }
     /*
      *替换接口里面的变量
      * $arr = [

@@ -13,16 +13,14 @@ class IdentitySamples
 	//返回部分数据
 	public function testAuth()
 	{
-		Openstack::$HOST  = 'http://controller:5000';
-		$M = new Identity();
+		$M = new Identity(['host'=>'http://controller:5000']);
 		$res = $M->auth(['name'=>'demo','password'=>'dandan123']);
 		print_r($res);exit;
 	}
 	//返回全部数据
 	public function testAuthAll()
 	{
-		Openstack::$HOST = 'http://controller:5000';
-		$M = new Identity();
+		$M = new Identity(['host'=>'http://controller:5000']);
 		$res = $M->auth(['name'=>'demo','password'=>'dandan123','all'=>true]);
 		print_r($res);exit;
 	}

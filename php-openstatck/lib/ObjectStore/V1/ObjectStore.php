@@ -13,7 +13,7 @@ use Openstack\Common\Http\CurlResponse;
 
 class ObjectStore extends OpenStack
 {
-    //版本
+    //版本接口路由
     public $version = OpenStack::OBJECT_001;
 
 	/*

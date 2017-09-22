@@ -11,7 +11,7 @@ use Openstack\Common\Http\CurlResponse;
 
 class Identity extends OpenStack
 {
-    //版本
+    //版本接口路由
     public $version = OpenStack::AUTH_001;
     /*
      *无作用域密码认证接口|Password authentication with unscoped authorization

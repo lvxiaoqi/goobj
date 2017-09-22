@@ -22,7 +22,7 @@ class Identity extends OpenStack
      * */
     public function __construct($arr = [])
     {
-        $host = empty($arr['host']) ? OpenStack::HOST : $arr['host'];
+        $host = empty($arr['host']) ? OpenStack::$HOST : $arr['host'];
         $this->path = $host.$this->version;
     }
     /*

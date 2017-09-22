@@ -12,9 +12,9 @@ class Openstack extends API
     //接口路径
     protected $path;
     //默认版本
-    const VERSION = '/v1';
+    public static $VERSION = '/v1';
     //默认主机
-    const HOST = 'http://controller:5000';
+    public static $HOST = 'http://controller:5000';
 
 
     /*

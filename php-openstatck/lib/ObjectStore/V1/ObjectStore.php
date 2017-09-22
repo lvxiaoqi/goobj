@@ -22,7 +22,8 @@ class ObjectStore extends OpenStack
 	 *      'account'    =>  'AUTH_95bcc3b2862741b58055b79c4d7bce2c',        //账号
 	 *      'currunt_page'  =>  1,                                          //当前页
 	 *      'page_size'     =>  10,                                          //每页条数
-	 *      'token'         =>  'xxxx'                                      //token
+	 *      'token'         =>  'xxxx',                                      //token
+	 *
 	 * ]
 	 *
 	 * */
@@ -38,7 +39,9 @@ class ObjectStore extends OpenStack
         ];
         $curl->headers['X-Auth-Token'] = $arr['token'];
         $res = $curl->get($this->path,$param);
-        print_r($res);exit;
+        $body = json_decode($res->body,true);
+        $headers = $res->headers;
+        return ['body'=>$body,'headers'=>$headers];
     }
 
 }

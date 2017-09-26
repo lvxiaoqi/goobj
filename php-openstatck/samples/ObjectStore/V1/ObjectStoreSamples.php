@@ -15,11 +15,19 @@ class ObjectStoreSamples
     {
         $M = new ObjectStore(['host'=>'http://controller:8080']);
         $account = 'AUTH_95bcc3b2862741b58055b79c4d7bce2c';
-        $token = 'gAAAAABZxKr_WZ-adoi49EyG1OW7gOuw6xjPLIfHZCYPXv2huDtHVAwkVC771WofZV0CoC2Xnj9U7SnbDz0BFC571aOgL5LQCQsdXJUY0FIYKxYWCldXxlEU-_T5xlEJtJOo4b3zEUYmykTJfc3TVVcMDG6vHFi2Pkx-NRGscPy0UVii334gP2A';
+        $token = 'gAAAAABZyHGWWBOAwA4gh1UzrmV86JkUYJP0JBb-Nl46STcfx1j063IoD4L5KdjETk6tQTd9XPcJDMLpp1Arm5wh1NMr3EWKDaq5EShXIec03brYO44LWGlqcsm6cuA5lyIk1-g1N6f9JGVBLy_fPuJg71Vas_1_DlIzwLkqkGcPdEIcw_9Aj8o';
         $res = $M->showAccount(['account'=>$account,'token'=>$token]);
         print_r($res);exit;
     }
-
+    //显示账号元数据
+    public function testShowMetaData()
+    {
+        $M = new ObjectStore(['host'=>'http://controller:8080']);
+        $account = 'AUTH_95bcc3b2862741b58055b79c4d7bce2c';
+        $token = 'gAAAAABZyHGWWBOAwA4gh1UzrmV86JkUYJP0JBb-Nl46STcfx1j063IoD4L5KdjETk6tQTd9XPcJDMLpp1Arm5wh1NMr3EWKDaq5EShXIec03brYO44LWGlqcsm6cuA5lyIk1-g1N6f9JGVBLy_fPuJg71Vas_1_DlIzwLkqkGcPdEIcw_9Aj8o';
+        $res = $M->showMetaData(['account'=>$account,'token'=>$token]);
+        print_r($res);exit;
+    }
 }
 
 

@@ -41,7 +41,12 @@ class Openstack extends API
         }
         return true;
     }
-
+    /*
+     * 处理header
+     * 状态是200表示成功
+     * 状态是401表示
+     *
+     * */
 }
 
 

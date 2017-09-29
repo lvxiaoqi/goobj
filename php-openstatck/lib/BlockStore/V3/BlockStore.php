@@ -29,12 +29,12 @@ class BlockStore extends OpenStack
 	 * 
 	 */
 	public function createTypes($arr = [])
-	{	
+	{
+        $this->checkoutVersion(['version'=>Openstack::BLOCK_004]);
 		if(empty($arr['account'])) return ['code'=>4000,'msg'=>'账号必须'];
 		if(empty($arr['token'])) return ['code'=>4000,'msg'=>'token必须'];
 		$curl = new Curl();
 		$this->getPath(['account'=>$arr['account']]);
-		$path = $this->path."/types";
 		$params = [
 			'volume_type'	=>[
 				"name"	=>	$arr['name'],
@@ -44,7 +44,7 @@ class BlockStore extends OpenStack
 		];
 		$curl->headers['Content-Type'] = 'application/json';
 		$curl->headers['X-Auth-Token']=$arr['token'];
-		$res = $curl->post($path,json_encode($params));
+		$res = $curl->post($this->path,json_encode($params));
 		$body = json_decode($res->body,true);
 		$headers = $res->headers;
 		return ['body'=>$body,'headers'=>$headers];
@@ -56,30 +56,34 @@ class BlockStore extends OpenStack
 	 *  $arr = [
 	 *  	'account'	=>	"用户",
 	 *  	'token'		=>	"###",
-	 *  	'sort'		=>	"asc",  //排序
+	 *  	'sort_dir'		=>	"asc",  //排序
+     *      'sort_key'      =>  "name"
 	 *  	'currunt_page'  =>  1,                                          //当前页
 	 *      'page_size'     =>  10,                                          //每页条数
-	 *  ]
+     *      'marker'        =>  'dsfsdfds'   //类型id ,用于做列表开始的上一条数据节点
+  	 *  ]
 	 */
 	public function typesList()
 	{
+        $this->checkoutVersion(['version'=>Openstack::BLOCK_004]);
 		if(empty($arr['account'])) return ['code'=>4000,'msg'=>'账号必须'];
 		if(empty($arr['token'])) return ['code'=>4000,'msg'=>'token必须'];
-
+        $arr['sort_dir']    = empty($arr['sort_dir']) ? "asc" : $arr['sort_dir'];
+        $arr['sort_key']    = empty($arr['sort_key']) ? "name" : $arr["sort_key"];
 		$arr['page_size'] = empty($arr['page_size']) ?  Conf::PAGE_SIZE : $arr['page_size'];
-		$arr['currunt_page'] = empty($arr['currunt_page']) ? 1 : $arr['currunt_page'];
+		$arr['currunt_page'] = empty($arr['currunt_page']) ? 0 : $arr['currunt_page']-1;
 
 		$curl = new Curl();
 		$this->getPath(['account'=>$arr['account']]);
-		$path = $this->path."/types";
 		$params = [
-			'sort'	=>	$arr['sort'],
+            "sort_dir"  =>  $arr['sort_dir'],
+            "sort_key"  =>  $arr['sort_key'],
 			'limit'	=>	$arr['page_size'],
-			'offset'=>	$arr['currunt_page'],
-			'marker'=>	($arr['currunt_page'] - 1) * $arr['page_size'],
+			'offset'=>	$arr['currunt_page']
 		];
+		if(!empty('marker')) $params['marker'] = $arr['marker'];
 		$curl->headers['X-Auth-Token']	= $arr['token'];
-		$res = $curl->get($path,$params);
+		$res = $curl->get($this->path,$params);
 		$body= json_decode($res->body,true);
 		$headers = $res->headers;
 		return ['body'=>$body,'headers'=>$headers];
@@ -100,12 +104,12 @@ class BlockStore extends OpenStack
 	 */
 	public function editTypes($arr = [])
 	{
+        $this->checkoutVersion(['version'=>Openstack::BLOCK_005]);
 		if(empty($arr['account'])) return ['code'=>4000,'msg'=>'账号必须'];
 		if(empty($arr['token'])) return ['code'=>4000,'msg'=>'token必须'];
 		if(empty($arr['volume_type_id'])) return ['code'=>4000,'msg'=>'券类型id不能为空'];
 		if(empty($arr['name'])) return ['code'=>4000,'msg'=>'券名称不能为空'];
-		$this->getPath(['account'=>$arr['account']]);
-		$path = $this->path."/types/".$arr["volume_type_id"]; 
+		$this->getPath(['account'=>$arr['account'],'volume_type_id'=>$arr['volume_type_id']]);
 		$params = [
 			"volume_type"=>[
 				'name'	=>	$arr['name'],
@@ -117,7 +121,7 @@ class BlockStore extends OpenStack
 		$curl = new Curl();
 		$curl->headers['Content-Type'] = 'application/json';
 		$curl->headers['X-Auth-Token']=$arr['token'];
-		$res = $curl->put($path,json_encode($params));
+		$res = $curl->put($this->path,json_encode($params));
 		$headers = $res->headers;
 		$body	= json_decode($res->body,true);
 		return ['body'=>$body,'headers'=>$headers];
@@ -134,17 +138,17 @@ class BlockStore extends OpenStack
 	 */
 	public function detailTypes($arr = [])
 	{
+        $this->checkoutVersion(['version'=>Openstack::BLOCK_005]);
 		if(empty($arr['account'])) return ['code'=>4000,'msg'=>'账号必须'];
 		if(empty($arr['token'])) return ['code'=>4000,'msg'=>'token必须'];
 		if(empty($arr['volume_type_id'])) return ['code'=>4000,'msg'=>'券类型id不能为空'];
 
-		$this->getPath(['account'=>$arr['account']]);
-		$path = $this->path."/types/".$arr['volume_type_id'];
+		$this->getPath(['account'=>$arr['account'],'volume_type_id'=>$arr['volume_type_id']]);
 		$params = [];
 
 		$curl = new Curl();
 		$curl->headers['X-Auth-Token']=$arr['token'];
-		$res = $curl->get($path,$params);
+		$res = $curl->get($this->path,$params);
 		$body = json_decode($res->body,true);
 		$headers = $res->headers;
 
@@ -162,20 +166,18 @@ class BlockStore extends OpenStack
 	 */
 	public function deleteTypes()
 	{
+        $this->checkoutVersion(['version'=>Openstack::BLOCK_005]);
 		if(empty($arr['account'])) return ['code'=>4000,'msg'=>'账号必须'];
 		if(empty($arr['token'])) return ['code'=>4000,'msg'=>'token必须'];
 		if(empty($arr['volume_type_id'])) return ['code'=>4000,'msg'=>'券类型id不能为空'];
 
-		$this->getPath(['account'=>$arr['account']]);
-		$path = $this->path."/types/".$arr['volume_type_id'];
+		$this->getPath(['account'=>$arr['account'],'volume_type_id'=>$arr['volume_type_id']]);
 		$params = [];
-
 		$curl = new Curl();
 		$curl->headers['X-Auth-Token']=$arr['token'];
-		$res = $curl->delete($path,$params);
+		$res = $curl->delete($this->path,$params);
 		$body = json_decode($res->body,true);
 		$headers = $res->headers;
-
 		return ['body'=>$body,'headers'=>$headers];
 	}
 }

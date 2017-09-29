@@ -15,7 +15,7 @@ use Openstack\Openstack;
 class Volume extends Openstack
 {
     //版本接口路由
-    public $version = Openstack::BLOCK_001;
+    public $version = Openstack::BLOCK_002;
 
     /*
      *卷列表 | List accessible volumes
@@ -87,6 +87,6 @@ class Volume extends Openstack
     {
         if(empty($arr['account'])) return ['code'=>4000,'msg'=>'用户必填'];
         if(empty($arr['token'])) return ['code'=>4000,'msg'=>'用户必填'];
-
+        if(empty($arr['size'])) return ['code'=>4000,'msg'=>'请填写卷大小'];
     }
 }

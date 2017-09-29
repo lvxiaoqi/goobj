@@ -27,5 +27,7 @@ class API
     const BLOCK_001 = '/v2/{account}';
     const BLOCK_002 = '/v2/{account}/volumes';
     const BLOCK_003 = '/v2/{account}/volumes/detail'; //卷列表详情数据
+    const BLOCK_004 = '/v2/{account}/types';
+    const BLOCK_005 = '/v2/{account}/types/{volume_type_id}';
 }
 ?>

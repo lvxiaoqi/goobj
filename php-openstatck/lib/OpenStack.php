@@ -11,6 +11,7 @@ class Openstack extends API
 {
     //接口路径
     protected $path;
+	//主机地址
     protected $host;
     //默认版本
     public static $VERSION = '/v1';

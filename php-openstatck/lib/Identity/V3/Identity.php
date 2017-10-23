@@ -11,20 +11,8 @@ use Openstack\Common\Http\CurlResponse;
 
 class Identity extends OpenStack
 {
-    //版本
-    private $version = OpenStack::AUTH_001;
-
-    /*
-     * 构造方法
-     * $arr = [
-     *        'host',
-     * ]
-     * */
-    public function __construct($arr = [])
-    {
-        $host = empty($arr['host']) ? OpenStack::$HOST : $arr['host'];
-        $this->path = $host.$this->version;
-    }
+    //版本接口路由
+    public $version = OpenStack::AUTH_001;
     /*
      *无作用域密码认证接口|Password authentication with unscoped authorization
      *$arr = [

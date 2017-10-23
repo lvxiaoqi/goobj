@@ -102,7 +102,8 @@ class ObjectStoreSamples
         $M = new ObjectStore();
         $res = $M->createObject($arr);
         return $res;        
-    }
+
+	}
 }
 
 

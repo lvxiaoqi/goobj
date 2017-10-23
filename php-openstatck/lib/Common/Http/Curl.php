@@ -168,14 +168,13 @@ class Curl {
     function request($method, $url, $vars = array()) {
         $this->error = '';
         $this->request = curl_init();
-        if (is_array($vars)) $vars = http_build_query($vars, '', '&');
+        if (is_array($vars) && !isset($vars['file'])) $vars = http_build_query($vars, '', '&');
         
         $this->set_request_method($method);
         $this->set_request_options($url, $vars);
         $this->set_request_headers();
         
         $response = curl_exec($this->request);
-        
         if ($response) {
             $response = new CurlResponse($response);
         } else {
@@ -234,6 +233,7 @@ class Curl {
     **/
     protected function set_request_options($url, $vars) {
         curl_setopt($this->request, CURLOPT_URL, $url);
+
         if (!empty($vars)) curl_setopt($this->request, CURLOPT_POSTFIELDS, $vars);
         
         # Set some default CURL options

@@ -32,6 +32,15 @@ class Openstack extends API
         return true;
     }
 
+    // /**
+    //  * 输出统一封装
+    //  * $data = []
+    //  */
+    // public function outPut($arr = []) {
+    //     is(is_array($arr)) {
+    //         return ['code' =>2000,'msg' =>'操作成功','data' =>$arr];
+    //     }
+    // }
 }
 
 

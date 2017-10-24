@@ -95,14 +95,13 @@ class ObjectStoreSamples
      * @return [type] [description]
      */
     public function uploadFiles() {
-        $arr['host'] = 'http://controller:8080/v1/AUTH_95bcc3b2862741b58055b79c4d7bce2c';
-        $arr['token'] = 'gAAAAABZzzoYWZpORmCmTB-y71gJcdge_xlxVMTBtcNQUc3PpB8K5bXveSxuQYlHlub_CFcFyIEqCzvW2XWsU9l5cWJ-pxrwpa_lvMqUXrCFQ1QiiSU-KBnlrNSoyjQXHzSlz7JVo7ImY9M3eozF3umf3QPuuaF4zJiaTd5UV31uhWL6QdW5qEM';
-        $arr['containersName'] = 'container1';
+        $arr['account'] = 'AUTH_95bcc3b2862741b58055b79c4d7bce2c';      //账号
+        $arr['token'] = 'gAAAAABZ7wfpz_98MBfCzqZ70ucnKisESBtPoWiVCt5fUx-OPmT-rpINLj-f1QmgzIOsn_zPmPFqUDYkjL1mzrlLos5jEbs8T43JG7ou7vlRHAj3KRCcx7xtdSH5-WACnNPuhXbyoQYhBEUYsH5T3iDWNguJKCwnS6XqUtj1BiQsQvv65JYHaBU';
+        $arr['container'] = 'container1';               //容器
         // $arr['objectName'] = 'home.png';
-        $M = new ObjectStore();
+        $M = new ObjectStore(['host'=>'http://controller:8080']);
         $res = $M->createObject($arr);
-        return $res;        
-
+        return $res;
 	}
 }
 

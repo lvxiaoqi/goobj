@@ -12,16 +12,7 @@ class ObjectStore extends OpenStack
 {
 	//版本接口路由
     public  $version = OpenStack::OBJECT_001;
-    private $host;
-    private $curl;
-    public function __construct($arr = []) {
-		parent::__construct();
-        if(!isset($arr['host'])) return ['code' =>4000,'msg' =>'请求目标地址不存在'];
-        if(!isset($arr['token'])) return ['code' =>4000,'msg' =>'用户token不存在'];
-        $this->host = $arr['host'];
-        $this->curl = new Curl();
-        $this->curl->headers['X-Auth-Token'] = $arr['token']; 
-    }
+
     /**
      * 对象存储列表
      * @return [type] [description]
@@ -233,18 +224,21 @@ class ObjectStore extends OpenStack
      * @return [type]      [description]
      */
     public function createObject($arr = []) {
-        // var_dump(__DIR__);exit();
-        $this->host = $arr['host'];
+        if(!empty($arr['host'])) $this->host = $arr['host'];
+        $this->checkoutVersion(['version'=>OpenStack::OBJECT_002]);
         $file = $_FILES['file'];
         $curl = new Curl();
-        $curl->headers['X-Auth-Token'] = $arr['token']; 
-        $curl->headers['X-Detect-Content-Type'] = true;
-        move_uploaded_file($file['tmp_name'],'./'.$file['name']);
-        // var_dump(move_uploaded_file($file['tmp_name'],'./'.$file['name']));exit();
-        curl_create_file()
-        $data = array('file' => new \CURLFile(realpath($file['name']),$file['type'],'file'));
-        // print_r($data);exit();
-        $result = $curl->put($this->host.'/'.$arr['containersName'].'/'.$file['name'],$data);
+        $curl->headers['X-Auth-Token'] = $arr['token'];
+        $curl->headers['Content-Type'] = $file['type'];
+        $data = file_get_contents($file['tmp_name']);
+        $this->getPath(
+            [
+                'account'   =>  $arr['account'],
+                'container'   =>  $arr['container'],
+                'object'   =>  $file['name']
+            ]
+        );
+        $result = $curl->put($this->path,$data);
         print_r($result);exit();      
     }
 

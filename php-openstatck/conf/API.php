@@ -19,6 +19,7 @@ class API
      *
      * */
     const OBJECT_001 = '/v1/{account}';
+    const OBJECT_002 = '/v1/{account}/{container}/{object}';		//对象操作
 
     /**
      *块存储模块 v2版本
